@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attachedFile">
+	
+	<!-- 첨부파일 조회 -->
+	<select id="getFileList" parameterType="int" resultType="fileVo">
+		select *
+			from attached_file
+			where post_no = #{post_no}
+	</select>
+	
+	<select id="getFile" parameterType="int" resultType="fileVo">
+		select *
+			from attached_file
+			where file_no = #{file_no}
+	</select>
+	
+	<!-- 첨부파일 등록 -->
+	<insert id="insertFile" parameterType="fileVo">
+		insert into attached_file (file_no, file_name, file_path, file_upload, file_date, post_no)
+			values (file_seq.nextval, #{file_name}, #{file_path}, #{file_upload}, sysdate, #{post_no})
+	</insert>
+	
+  
+</mapper>

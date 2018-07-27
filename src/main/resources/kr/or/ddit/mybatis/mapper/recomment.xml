@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recomment">
+
+	<!-- 게시글에 해당하는 댓글 조회 -->
+	<select id="getRec" parameterType="int" resultType="recVo">
+		select *
+			from recomment
+			where post_no = #{post_no}
+			order by rec_no desc
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertRec" parameterType="recVo">
+		insert into recomment (rec_no, rec_content, rec_date, rec_delete, post_no, id, std_id)
+			values (rec_seq.nextval, #{rec_content}, sysdate, 'n', #{post_no}, #{id}, #{std_id})
+	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteRec" parameterType="int">
+		update recomment
+			set rec_delete = 'y'
+			where rec_no = #{rec_no}
+	</update>
+	
+  
+</mapper>

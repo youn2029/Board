@@ -1,0 +1,5 @@
+table tbody tr:hover{cursor:pointer}/* For all tables */
+
+/* custom table */
+.custom-table {margin-bottom:0 !important}
+.custom-table tr td {height:42px;border-top:0 !important}

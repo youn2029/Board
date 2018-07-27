@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="posts">
+
+	<!-- 게시판의 게시글 page별 조회 -->
+	<select id="getListPost" parameterType="map" resultType="postsVo">
+		SELECT * 
+			FROM (SELECT a.*, ROWNUM rn 
+			      FROM (SELECT post_no
+			                 , LPAD('└', (level-1)*4,' ')||posts.post_title as post_title
+			                 , post_content
+			                 , post_date
+			                 , post_group
+			                 , post_pno
+			                 , post_delete
+			                 , id
+			                 , std_id
+			                 , board_no
+			            FROM posts
+			            WHERE board_no = #{board_no}
+			            START WITH post_pno is null
+			            CONNECT BY PRIOR post_no = post_pno
+			            ORDER SIBLINGS BY post_group DESC) a) 
+			WHERE rn BETWEEN (#{page}-1)*#{pageSize}+1 AND #{page}*#{pageSize}
+	</select>
+	
+	<!-- 게시판의 게시글 전체 갯수 조회  -->
+	<select id="getCountPost" parameterType="int" resultType="int">
+		SELECT count(*)
+			FROM posts
+			WHERE board_no=#{board_no}
+	</select>
+	
+	<!-- 게시글 정보 조회 -->
+	<select id="getPost" parameterType="int" resultType="postsVo">
+		SELECT *
+			FROM posts
+			WHERE post_no=#{post_no}
+	</select>
+	
+	<!-- 게시글 등록 -->
+	<insert id="insertPost" parameterType="postsVo">
+		INSERT INTO posts (post_no, post_title, post_content, post_date, post_delete, post_group, post_pno, id, board_no, std_id)
+			VALUES (post_seq.nextval, #{post_title}, #{post_content}, sysdate, 'n', post_seq.nextval, null, #{id}, #{board_no}, #{std_id})
+	</insert>
+	
+	<!-- 등록 후 게시글 번호 조회 -->
+	<select id="getPostVo" parameterType="postsVo" resultType="postsVo">
+		SELECT  *
+			FROM posts
+			WHERE post_title = #{post_title}
+			AND id = #{id}
+			AND board_no = #{board_no}
+	</select>
+	
+	
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="postsVo">
+		UPDATE posts
+			SET post_title=#{post_title}
+			  , post_content=#{post_content}
+			WHERE post_no=#{post_no}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deletePost" parameterType="int">
+		UPDATE posts
+			SET post_delete='y'
+			WHERE post_no=#{post_no}
+	</update>
+	
+	<!-- 답글 등록 -->
+	<insert id="insertReplyPost">
+		INSERT INTO posts (post_no, post_title, post_content, post_date, post_delete, post_group, post_pno, id, board_no, std_id)
+			VALUES (post_seq.nextval, #{post_title}, #{post_content}, sysdate, 'n', #{post_group}, #{post_pno}, #{id}, #{board_no}, #{std_id})
+	</insert>
+	
+	<!-- 답글 수정 -->
+	<update id="updateReplyPost">
+	</update>
+  
+</mapper>

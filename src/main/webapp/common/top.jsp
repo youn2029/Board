@@ -14,6 +14,7 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
+				<li><a href="<%=request.getContextPath() %>/mypage">My Page</a></li>
 				<li><a href="<%=request.getContextPath() %>/logout">Logout</a></li>
 			</ul>
 			<form class="navbar-form navbar-right">

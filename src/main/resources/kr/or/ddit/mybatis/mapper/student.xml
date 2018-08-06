@@ -9,4 +9,11 @@
 			from student 
 			where std_id=#{std_id}
 	</select>
+	
+	<!-- id로 학생 정보 조회 -->
+	<select id="getStudentId" parameterType="int" resultType="stdVo">
+		select * 
+			from student 
+			where id = #{id}
+	</select>
 </mapper>

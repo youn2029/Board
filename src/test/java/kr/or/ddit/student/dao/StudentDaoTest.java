@@ -1,6 +1,6 @@
 package kr.or.ddit.student.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import kr.or.ddit.student.model.StudentVO;
 
 import org.junit.Before;
@@ -29,6 +29,19 @@ public class StudentDaoTest {
 
 		/***When***/
 		StudentVO stdVo = stdDao.getStudent(std_id);
+
+		/***Then***/
+		assertEquals("윤성호", stdVo.getName());
+
+	}
+	
+	@Test
+	public void getStudentIdTest(){
+		/***Given***/
+		int id = 24;
+
+		/***When***/
+		StudentVO stdVo = stdDao.getStudent(id);
 
 		/***Then***/
 		assertEquals("윤성호", stdVo.getName());
